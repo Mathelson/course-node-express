@@ -1,28 +1,26 @@
-//setInterval(() =>{
- //   console.log('hello world')
-//}, 2000)
-//console.log(`I will run first`)
+const { readFile } = require('fs')
+const { reject, result } = require('lodash')
 
-
-//ASYNC PATTERNS
-const http = require('http')
-
-const server = http.createServer((req, res) => {
-  if (req.url === '/') {
-    res.end('Home Page')
+//for encapsulate function readFile
+const getText = (path) =>{
+  return new Promise((resolve,reject)=>{
+    //encapsulate
+    //readFile('./content/first.txt', 'utf8', (err, data) => {
+readFile(path, 'utf8', (err, data) => {
+  if(err) {
+    //return
+    reject(err)
   }
-  if (req.url === '/about') {
-    // blocking code Error
-    for (let i = 0; i < 1000; i++) {
-      for (let j = 0; j < 1000; j++) {
-        console.log(`${i} ${j}`)
-      }
-    }
-    res.end('About Page')
+  else {
+    //console.log(data)
+    resolve(data)
   }
-  res.end('Error Page')
-})
+})//encapsulate
 
-server.listen(5000, () => {
-  console.log('Server listening on port : 5000....')
-})
+
+  })
+}
+
+getText('./content/first.txt')
+  .then((result) => console.log(result))
+  //3:00
